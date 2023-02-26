@@ -88,26 +88,33 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,            		XK_u,	   togglescratch,  {.ui = 0 } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+        // Switch windows using Mod + [j,k]
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-        /* { MODKEY,                       XK_d,      incnmaster,     {.i = -1 } }, */
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+        // Change current master Window
+	{ MODKEY|ShiftMask,             XK_j,      incnmaster,     {.i = -1 } },
+        { MODKEY|ShiftMask,             XK_k,      incnmaster,     {.i = +1 } },
+        // Switch monitors using Mod + [h,l]
+	{ MODKEY,                       XK_h,      focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_l,      focusmon,       {.i = +1 } },
+
+        // Increase/Decrease windows size using Mod + [n,m]
+	{ MODKEY,                       XK_n,      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_m,      setmfact,       {.f = +0.05} },
+
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	/* { MODKEY|ShiftMask,             XK_c,      killclient,     {0} },*/
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	/* { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} }, */
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	/* { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } }, */
-	/* { MODKEY,                       XK_period, focusmon,       {.i = +1 } }, */
 	/* { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } }, */
 	/* { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } }, */
+        // Switch tag using Win + <tag_number>
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -128,10 +135,11 @@ static const Key keys[] = {
 	{ 0, XF86XK_AudioPlay,		spawn,		{.v = (const char*[]){ "music", "plpa", NULL } } },
 
         /* PROGRAMS SHORTCUTS */
-	{ MODKEY,			XK_w,		spawn,		{.v = (const char*[]){ BROWSER, NULL } } },
-	{ MODKEY|ShiftMask,		XK_w,		spawn,		{.v = (const char*[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } } },
+	{ MODKEY|ShiftMask,		XK_w,		spawn,		{.v = (const char*[]){ BROWSER, NULL } } },
+	{ MODKEY,		        XK_w,		spawn,		{.v = (const char*[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } } },
 	{ MODKEY,			XK_d,		spawn,          {.v = (const char*[]){ "rofi", "-show", "drun", NULL } } },
 	{ MODKEY,			XK_BackSpace,	spawn,		{.v = (const char*[]){ "sysact", NULL } } },
+	{ MODKEY,		        XK_i,		spawn,		{.v = (const char*[]){ TERMINAL, "-e", "htop", NULL } } },
 
         /* WINDOWS ACTIONS */
         // TODO: Here
@@ -141,6 +149,8 @@ static const Key keys[] = {
 	{ MODKEY,			XK_q,		killclient,	{0} },
 	{ MODKEY|ShiftMask,		XK_h,	        tagmon,		{.i = -1 } },
 	{ MODKEY|ShiftMask,		XK_l,	        tagmon,		{.i = +1 } },
+
+        { MODKEY,                       XK_x,           spawn,          {.v = (const char*[]){"slock"}}},
 
         /* DWM CONTROL */
 	/* { 0, XF86XK_MonBrightnessUp,	spawn,		{.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } }, */
