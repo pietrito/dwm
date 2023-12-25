@@ -46,8 +46,12 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+
+	// { "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+
+  /* No borders for single window in a workspace */
+  // { NULL,       NULL,       NULL,       1 << 8,       0,            0 },
 };
 
 /* layout(s) */
@@ -98,14 +102,12 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_h,      focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_l,      focusmon,       {.i = +1 } },
 
-        // Increase/Decrease windows size using Mod + [n,m]
-	{ MODKEY,                       XK_n,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_m,      setmfact,       {.f = +0.05} },
+	{ MODKEY,		                    XK_m,		   spawn,		       {.v = (const char*[]){ TERMINAL, "-e", "ncmpcpp", NULL } } },
 
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	/* { MODKEY|ShiftMask,             XK_c,      killclient,     {0} },*/
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+/* 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, */
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	/* { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} }, */
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
@@ -127,34 +129,43 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,           quit,           {0} },
 
         /* MUSIC CONTROL */
-	{ MODKEY,			XK_comma,	spawn,		{.v = (const char*[]){ "music", "prev", NULL } } },
-	{ MODKEY,			XK_period,	spawn,		{.v = (const char*[]){ "music", "next", NULL } } },
-	{ MODKEY,			XK_p,		spawn,		{.v = (const char*[]){ "music", "plpa", NULL } } },
-	{ 0, XF86XK_AudioPrev,		spawn,		{.v = (const char*[]){ "music", "prev", NULL } } },
-	{ 0, XF86XK_AudioNext,		spawn,		{.v = (const char*[]){ "music",  "next", NULL } } },
-	{ 0, XF86XK_AudioPlay,		spawn,		{.v = (const char*[]){ "music", "plpa", NULL } } },
+	{ MODKEY,	XK_comma,	            spawn,	{.v = (const char*[]){ "music", "prev", NULL } } },
+	{ MODKEY,	XK_period,	          spawn,	{.v = (const char*[]){ "music", "next", NULL } } },
+	{ MODKEY,	XK_p,		              spawn,	{.v = (const char*[]){ "music", "plpa", NULL } } },
+
+        /* Function Keys */
+	{ 0, XF86XK_AudioPrev,	       spawn,	{.v = (const char*[]){ "music",      "prev",      NULL } } },
+	{ 0, XF86XK_AudioNext,	       spawn,	{.v = (const char*[]){ "music",      "next",      NULL } } },
+	{ 0, XF86XK_AudioPlay,	       spawn,	{.v = (const char*[]){ "music",      "plpa",      NULL } } },
+  { 0, XF86XK_AudioLowerVolume,  spawn, {.v = (const char*[]){ "pamixer",    "-d",   "5", NULL } } },
+  { 0, XF86XK_AudioRaiseVolume,  spawn, {.v = (const char*[]){ "pamixer",    "-i",   "5", NULL } } },
+  { 0, XF86XK_AudioMute,         spawn, {.v = (const char*[]){ "pamixer",    "-t",        NULL } } },
+	{ 0, XF86XK_MonBrightnessUp,	 spawn,	{.v = (const char*[]){ "xbacklight", "+5",        NULL } } },
+	{ 0, XF86XK_MonBrightnessDown, spawn,	{.v = (const char*[]){ "xbacklight", "-3",        NULL } } },
+
 
         /* PROGRAMS SHORTCUTS */
 	{ MODKEY|ShiftMask,		XK_w,		spawn,		{.v = (const char*[]){ BROWSER, NULL } } },
-	{ MODKEY,		        XK_w,		spawn,		{.v = (const char*[]){ TERMINAL, "-e", "sudo", "nmtui", NULL } } },
+	{ MODKEY,		        XK_w,		spawn,		{.v = (const char*[]){ TERMINAL, "-e", "nmtui", NULL } } },
 	{ MODKEY,			XK_d,		spawn,          {.v = (const char*[]){ "rofi", "-show", "drun", NULL } } },
 	{ MODKEY,			XK_BackSpace,	spawn,		{.v = (const char*[]){ "sysact", NULL } } },
-	{ MODKEY,		        XK_i,		spawn,		{.v = (const char*[]){ TERMINAL, "-e", "htop", NULL } } },
+/* 	{ MODKEY,		        XK_i,		spawn,		{.v = (const char*[]){ TERMINAL, "-e", "htop", NULL } } }, */
+  { MODKEY,           XK_i,   spawn,    {.v = (const char*[]){"flameshot", "gui", NULL}}},
 
         /* WINDOWS ACTIONS */
         // TODO: Here
 // 	{ MODKEY,			XK_s,		togglesticky,	{0} },
 // 	{ MODKEY,			XK_z,		incrgaps,	{.i = +3 } },
 // 	{ MODKEY,			XK_x,		incrgaps,	{.i = -3 } },
+  // Increase/Decrease windows size using Mod + [n,m]
+	// { MODKEY,                       XK_n,      setmfact,       {.f = -0.05} },
+	// { MODKEY,                       XK_m,      setmfact,       {.f = +0.05} },
 	{ MODKEY,			XK_q,		killclient,	{0} },
 	{ MODKEY|ShiftMask,		XK_h,	        tagmon,		{.i = -1 } },
 	{ MODKEY|ShiftMask,		XK_l,	        tagmon,		{.i = +1 } },
 
-        { MODKEY,                       XK_x,           spawn,          {.v = (const char*[]){"slock"}}},
-
-        /* DWM CONTROL */
-	/* { 0, XF86XK_MonBrightnessUp,	spawn,		{.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } }, */
-	/* { 0, XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){ "xbacklight", "-dec", "15", NULL } } }, */
+  { MODKEY,                       XK_x,           spawn,          {.v = (const char*[]){"slock", NULL}}},
+  { MODKEY,                       XK_y,           spawn,          {.v = (const char*[]){"ytdlp", NULL}}},
 };
 
 /* button definitions */
